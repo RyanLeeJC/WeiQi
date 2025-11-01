@@ -22,6 +22,27 @@ And also all the cmds and steps in it too. So that I know what to do in the
 future, for a similar setup."
 
 --------------------------------------------------------------------------------
+COMPLETED SETUP - WEIQI PROJECT
+--------------------------------------------------------------------------------
+
+This WeiQi project has been successfully set up and linked to GitHub!
+
+Repository URL: https://github.com/RyanLeeJC/WeiQi
+
+Working with this repository:
+
+View your repository on GitHub:
+  https://github.com/RyanLeeJC/WeiQi
+
+Work on this project from any computer:
+  git clone https://github.com/RyanLeeJC/WeiQi.git
+
+Make changes and push updates:
+  git add .
+  git commit -m "Your commit message"
+  git push
+
+--------------------------------------------------------------------------------
 COMPLETE SETUP PROCESS
 --------------------------------------------------------------------------------
 
