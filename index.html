@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeiQi (Go) - 9x9 Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>WeiQi (Go) - 9x9 Board</h1>
+            <div class="game-info">
+                <div class="controls-row">
+                    <div class="game-mode-selector">
+                        <label>Game Mode:</label>
+                        <select id="gameMode" class="mode-select">
+                            <option value="cpu" selected>vs CPU</option>
+                            <option value="2players">2 Players</option>
+                        </select>
+                    </div>
+                    <button id="resetBtn" class="reset-btn">New Game</button>
+                </div>
+                <div class="info-row">
+                    <div class="score">
+                        <span class="stone-preview black-stone"></span>
+                        <span>Black Captured: <span id="blackCaptured">0</span></span>
+                    </div>
+                    <div id="gameStatus" class="status">Place a stone to begin</div>
+                    <div class="score">
+                        <span class="stone-preview white-stone"></span>
+                        <span>White Captured: <span id="whiteCaptured">0</span></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-board-container">
+            <canvas id="gameBoard" width="540" height="540"></canvas>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
+
