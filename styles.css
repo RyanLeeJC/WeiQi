@@ -94,6 +94,28 @@ header h1 {
     box-sizing: border-box;
 }
 
+/* Mobile: stack status below captures */
+@media (max-width: 600px) {
+    .info-row {
+        flex-wrap: wrap;
+    }
+    
+    .info-row .status {
+        order: 3;
+        flex-basis: 100%;
+        margin-top: 8px;
+        max-width: 100%;
+    }
+    
+    .info-row .score:first-child {
+        order: 1;
+    }
+    
+    .info-row .score:last-child {
+        order: 2;
+    }
+}
+
 .score {
     display: flex;
     align-items: center;
