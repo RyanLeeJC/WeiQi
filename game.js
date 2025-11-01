@@ -29,6 +29,7 @@ class GoGame {
 
     setupEventListeners() {
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
+        this.canvas.addEventListener('touchstart', (e) => this.handleTouch(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
         this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
         document.getElementById('resetBtn').addEventListener('click', () => this.resetGame());
@@ -52,10 +53,7 @@ class GoGame {
             return;
         }
 
-        const rect = this.canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
+        const { x, y } = this.getEventCoordinates(event);
         const { row, col } = this.getGridPosition(x, y);
 
         // Check if hovering over a valid intersection
@@ -82,16 +80,40 @@ class GoGame {
         this.drawBoard(); // Redraw to hide hover preview
     }
 
+    getEventCoordinates(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / rect.width;
+        const scaleY = this.canvas.height / rect.height;
+        
+        let clientX, clientY;
+        if (event.touches && event.touches.length > 0) {
+            // Touch event
+            clientX = event.touches[0].clientX;
+            clientY = event.touches[0].clientY;
+        } else {
+            // Mouse event
+            clientX = event.clientX;
+            clientY = event.clientY;
+        }
+        
+        const x = (clientX - rect.left) * scaleX;
+        const y = (clientY - rect.top) * scaleY;
+        
+        return { x, y };
+    }
+
+    handleTouch(event) {
+        event.preventDefault(); // Prevent scrolling and double-firing
+        this.handleClick(event);
+    }
+
     handleClick(event) {
         // Don't allow clicks if it's CPU's turn
         if (this.gameMode === 'cpu' && this.currentPlayer === this.cpuPlayer) {
             return;
         }
 
-        const rect = this.canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
+        const { x, y } = this.getEventCoordinates(event);
         const { row, col } = this.getGridPosition(x, y);
 
         if (this.isValidMove(row, col)) {
