@@ -110,6 +110,38 @@ header h1 {
     order: 2;
 }
 
+/* Mobile portrait: compact layout with status on new line */
+@media (max-width: 600px) and (orientation: portrait) {
+    .game-info {
+        gap: 3px;
+        margin-bottom: 3px;
+        padding: 4px 30px;
+    }
+    
+    header h1 {
+        margin-bottom: 2px;
+        font-size: 1.1rem;
+    }
+    
+    .container {
+        padding: 4px 0;
+    }
+    
+    .game-board-container {
+        margin: 1px 0;
+    }
+    
+    .status {
+        padding: 3px 6px;
+        min-height: 24px;
+        font-size: 0.7rem;
+    }
+    
+    .info-row .status {
+        margin-top: 3px;
+    }
+}
+
 .score {
     display: flex;
     align-items: center;
