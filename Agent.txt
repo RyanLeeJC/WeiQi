@@ -1,0 +1,328 @@
+================================================================================
+AGENT SETUP NOTES - GitHub Repository Linking for New Projects
+================================================================================
+
+Date Created: Setup session for WeiQi project
+Purpose: Reference guide for linking local projects to GitHub repositories
+
+--------------------------------------------------------------------------------
+ORIGINAL USER PROMPTS
+--------------------------------------------------------------------------------
+
+Prompt 1:
+"I want to create a new project called WeiQi, for the board game WeiQi (or also 
+called Go in other names). I have created the folder named WeiQi on my local. 
+I want to also directly link this to a new GitHub repo, so that I can work from 
+Cursor from different computers, and push updates to GitHub repo. Can you first 
+show me the steps to set up the GitHub repo linking?"
+
+Prompt 2:
+"Can you save all the prompts I made, into an Agent.txt into the root folder? 
+And also all the cmds and steps in it too. So that I know what to do in the 
+future, for a similar setup."
+
+--------------------------------------------------------------------------------
+COMPLETE SETUP PROCESS
+--------------------------------------------------------------------------------
+
+STEP 1: CREATE GITHUB REPOSITORY
+
+You have TWO options:
+
+OPTION A: Create via GitHub Website (Manual)
+--------------------------------------------
+Action: Create repository on GitHub website
+URL: https://github.com/new
+
+Instructions:
+1. Repository name: [Your Project Name] (e.g., "WeiQi")
+2. Choose visibility: Public or Private
+3. IMPORTANT: DO NOT check any of these boxes:
+   - Add a README file
+   - Add .gitignore
+   - Choose a license
+   (We will create these locally)
+4. Click "Create repository"
+
+OPTION B: Create from Cursor Terminal (Automated) - RECOMMENDED
+----------------------------------------------------------------
+You can create the repository directly from the terminal using GitHub CLI!
+
+First, install GitHub CLI (if not already installed):
+----------------------------------------
+# On macOS (using Homebrew)
+brew install gh
+
+# On other systems, see: https://cli.github.com/manual/installation
+----------------------------------------
+
+Then authenticate GitHub CLI:
+----------------------------------------
+# Login to GitHub (will open browser for authentication)
+gh auth login
+
+# Follow the prompts to authenticate
+----------------------------------------
+
+Create repository from terminal:
+----------------------------------------
+# Create a new repository (replace with your project name)
+gh repo create [PROJECT_NAME] --public --source=. --remote=origin --push
+
+# For private repository:
+gh repo create [PROJECT_NAME] --private --source=. --remote=origin --push
+
+# Examples:
+gh repo create WeiQi --public --source=. --remote=origin --push
+gh repo create my-project --private --source=. --remote=origin --push
+----------------------------------------
+
+This single command will:
+- Create the repository on GitHub
+- Add it as remote origin
+- Push your local code to GitHub
+- All from the terminal in Cursor!
+
+Note: You need to have git initialized and at least one commit before using --push
+
+
+STEP 2: INITIALIZE GIT LOCALLY
+
+Location: Navigate to your project folder in terminal
+
+Commands to run:
+----------------------------------------
+# Navigate to your project directory
+cd "/path/to/your/project"
+
+# Initialize git repository
+git init
+
+# Create README.md
+echo "# [Project Name] - [Description]" > README.md
+
+# Create .gitignore file
+cat > .gitignore << 'EOF'
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+
+# Node.js (if needed)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.log
+EOF
+
+# Stage all files
+git add .
+
+# Make your first commit
+git commit -m "Initial commit: [Project Name] project setup"
+
+# Rename the default branch to main (if needed)
+git branch -M main
+----------------------------------------
+
+
+STEP 3: LINK TO GITHUB REPOSITORY
+
+Commands to run:
+----------------------------------------
+# Add the remote repository
+# Replace YOUR_USERNAME with your GitHub username
+# Replace REPO_NAME with your repository name
+git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
+
+# Verify the remote was added correctly
+git remote -v
+
+# Push your code to GitHub
+git push -u origin main
+----------------------------------------
+
+Note: When you run `git push`, you may be prompted for credentials:
+- GitHub no longer accepts passwords for HTTPS
+- You'll need a Personal Access Token (PAT) or SSH key
+- See authentication section below
+
+
+STEP 4: VERIFY CONNECTION
+
+Commands to verify everything is set up correctly:
+----------------------------------------
+# Check remote repository connection
+git remote -v
+
+# Check current status
+git status
+
+# Check current branch
+git branch
+----------------------------------------
+
+
+--------------------------------------------------------------------------------
+WORKING FROM DIFFERENT COMPUTERS
+--------------------------------------------------------------------------------
+
+When setting up on a NEW computer:
+
+1. Clone the repository:
+   git clone https://github.com/YOUR_USERNAME/REPO_NAME.git
+
+2. Navigate into the cloned directory:
+   cd REPO_NAME
+
+3. Start working - make changes, then:
+   git add .
+   git commit -m "Your commit message"
+   git push
+
+When working on an EXISTING computer (already cloned):
+
+1. Navigate to project folder
+2. Pull latest changes first:
+   git pull
+
+3. Make your changes, then:
+   git add .
+   git commit -m "Your commit message"
+   git push
+
+
+--------------------------------------------------------------------------------
+AUTHENTICATION SETUP
+--------------------------------------------------------------------------------
+
+GitHub no longer accepts password authentication for HTTPS. You have two options:
+
+OPTION 1: Personal Access Token (PAT)
+- Go to: GitHub Settings > Developer settings > Personal access tokens > Tokens (classic)
+- Generate new token with 'repo' scope
+- Use token as password when prompted during git push
+- Store securely (consider using credential manager)
+
+OPTION 2: SSH Keys (Recommended for ease of use)
+- Generate SSH key: ssh-keygen -t ed25519 -C "your_email@example.com"
+- Add to ssh-agent: eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519
+- Copy public key: cat ~/.ssh/id_ed25519.pub
+- Add to GitHub: Settings > SSH and GPG keys > New SSH key
+- Change remote URL: git remote set-url origin git@github.com:USERNAME/REPO.git
+
+Reference: https://docs.github.com/en/authentication
+
+
+--------------------------------------------------------------------------------
+QUICK REFERENCE: COMMON GIT COMMANDS
+--------------------------------------------------------------------------------
+
+# Check status
+git status
+
+# View commit history
+git log --oneline
+
+# Check remote configuration
+git remote -v
+
+# Pull latest changes
+git pull
+
+# Stage all changes
+git add .
+
+# Stage specific file
+git add filename.py
+
+# Commit changes
+git commit -m "Description of changes"
+
+# Push to GitHub
+git push
+
+# Push to specific branch
+git push origin branch-name
+
+# Create new branch
+git checkout -b feature-branch-name
+
+# Switch branches
+git checkout branch-name
+
+# View all branches
+git branch -a
+
+
+--------------------------------------------------------------------------------
+TROUBLESHOOTING
+--------------------------------------------------------------------------------
+
+Issue: "fatal: remote origin already exists"
+Solution: Remove and re-add:
+  git remote remove origin
+  git remote add origin https://github.com/USERNAME/REPO.git
+
+Issue: Authentication failed
+Solution: Use Personal Access Token or SSH keys (see Authentication section)
+
+Issue: "error: failed to push some refs"
+Solution: Pull first, then push:
+  git pull origin main --allow-unrelated-histories
+  git push -u origin main
+
+Issue: "git: command not found"
+Solution: Install Git:
+  - macOS: Install Xcode Command Line Tools
+  - Or download from: https://git-scm.com/downloads
+
+
+--------------------------------------------------------------------------------
+NOTES FOR FUTURE SETUPS
+--------------------------------------------------------------------------------
+
+When creating a new project and linking to GitHub:
+
+1. Always create empty GitHub repo first (no README/gitignore/license)
+2. Initialize git locally before linking
+3. Create proper .gitignore for your project type (Python, Node, etc.)
+4. Make initial commit before pushing
+5. Use main branch (modern standard)
+6. Set up authentication (PAT or SSH) before first push
+7. Verify connection with git remote -v
+
+Quick checklist:
+[ ] GitHub repo created (empty)
+[ ] Git initialized locally
+[ ] README.md created
+[ ] .gitignore created
+[ ] Initial commit made
+[ ] Remote origin added
+[ ] First push successful
+[ ] Verified with git remote -v
+
+
+================================================================================
+END OF AGENT SETUP NOTES
+================================================================================
+
